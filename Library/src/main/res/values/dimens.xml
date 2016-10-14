@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="normal_avatar">90dp</dimen>
+    <!--<dimen name="small_avatar">64dp</dimen>-->
+    <dimen name="floder_height">90dp</dimen>
+</resources>

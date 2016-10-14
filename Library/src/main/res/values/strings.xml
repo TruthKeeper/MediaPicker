@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MediaPicker</string>
+
+    <string name="camera_text">拍摄照片</string>
+</resources>

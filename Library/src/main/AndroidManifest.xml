@@ -1,0 +1,34 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tk.mediapicker">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".photopicker.ui.activity.AlbumActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".photopicker.ui.activity.AlbumPreActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".photopicker.ui.activity.CameraResultActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.tk.mediapicker.photopicker.AlbumModule"
+            android:value="GlideModule" />
+
+    </application>
+
+</manifest>

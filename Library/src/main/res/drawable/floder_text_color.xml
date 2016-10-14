@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="@color/folder_text_no_enable" android:state_enabled="false" />
+    <item android:color="@color/folder_text_press" android:state_pressed="true" />
+    <item android:color="@color/folder_text_normal" />
+
+</selector>
