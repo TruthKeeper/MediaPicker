@@ -2,4 +2,6 @@
     <string name="app_name">MediaPicker</string>
 
     <string name="camera_text">拍摄照片</string>
+    <string name="permission_camera_null">缺少相应的权限</string>
+    <string name="permission_photo_null">缺少开启相册的权限</string>
 </resources>

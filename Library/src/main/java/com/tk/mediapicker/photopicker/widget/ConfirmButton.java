@@ -11,7 +11,7 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import com.tk.mediapicker.photopicker.PhotoPicker;
-import com.tk.mediapicker.photopicker.utils.DensityUtil;
+import com.tk.mediapicker.common.DensityUtil;
 import com.tk.mediapicker.photopicker.utils.ThemeUtils;
 
 /**

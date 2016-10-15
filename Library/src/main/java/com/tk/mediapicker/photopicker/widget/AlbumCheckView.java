@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.tk.mediapicker.photopicker.PhotoPicker;
-import com.tk.mediapicker.photopicker.utils.DensityUtil;
+import com.tk.mediapicker.common.DensityUtil;
 
 
 /**

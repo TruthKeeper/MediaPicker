@@ -7,7 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.tk.mediapicker.photopicker.utils.DensityUtil;
+import com.tk.mediapicker.common.DensityUtil;
 
 
 /**

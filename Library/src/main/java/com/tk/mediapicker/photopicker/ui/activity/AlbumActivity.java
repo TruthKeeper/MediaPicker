@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +21,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tk.mediapicker.R;
+import com.tk.mediapicker.common.PermissionHelper;
 import com.tk.mediapicker.photopicker.Constants;
 import com.tk.mediapicker.photopicker.bean.AlbumBean;
 import com.tk.mediapicker.photopicker.bean.AlbumFolderBean;
@@ -57,7 +60,7 @@ public class AlbumActivity extends AppCompatActivity implements OnFolderListener
     private View shadow;
     private LinearLayout shadowLayout;
 
-    private AlbumFragment albumFragment = new AlbumFragment();
+    private AlbumFragment albumFragment;
     private FolderAdapter folderAdapter;
     //文件夹list
     private List<AlbumFolderBean> albumFolderList = new ArrayList<AlbumFolderBean>();
@@ -77,15 +80,47 @@ public class AlbumActivity extends AppCompatActivity implements OnFolderListener
         setContentView(R.layout.activity_album);
         initViews();
         initConstants();
-
         shadowArgb = new ArgbEvaluator();
+        initFragment();
+        //校验权限then初始化数据源
+        int result = PermissionHelper.getPermission(this, PermissionHelper.PHOTO_PERMISSIONS);
+        if (result == -1) {
+            finish();
+        }
+        if (result == 1) {
+            albumFragment.setHasPermission(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionHelper.checkOnResult(requestCode, permissions, grantResults, new PermissionHelper.OnPermissionListener() {
+            @Override
+            public void onFailure(String[] failurePermissions) {
+                Toast.makeText(getApplicationContext(), R.string.permission_photo_null, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onSuccess() {
+                albumFragment.initData();
+            }
+        });
+    }
+
+    /**
+     * 初始化碎片
+     */
+    private void initFragment() {
+        albumFragment = new AlbumFragment();
         //继续传递
         albumFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.main_album, albumFragment).commit();
         albumFragment.setOnFolderListener(this);
         albumFragment.setOnAlbumSelectListener(this);
-
     }
+
 
     /**
      * 初始化views
@@ -138,7 +173,7 @@ public class AlbumActivity extends AppCompatActivity implements OnFolderListener
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else if (view.getId() == folder_layout) {//文件夹
-            if (animLock || albumFolderList.size() == 1) {
+            if (animLock || albumFolderList.size() <= 1) {
                 return;
             }
             startFolderAnim();

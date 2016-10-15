@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.tk.mediapicker.R;
-import com.tk.mediapicker.photopicker.utils.DensityUtil;
+import com.tk.mediapicker.common.DensityUtil;
 
 
 /**

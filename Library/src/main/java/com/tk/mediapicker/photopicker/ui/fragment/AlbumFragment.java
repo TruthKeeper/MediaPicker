@@ -11,17 +11,17 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
-import com.tk.mediapicker.photopicker.Constants;
 import com.tk.mediapicker.R;
-import com.tk.mediapicker.photopicker.ui.adapter.AlbumAdapter;
-import com.tk.mediapicker.photopicker.ui.adapter.AlbumAdapter.OnAlbumSelectListener;
+import com.tk.mediapicker.photopicker.Constants;
 import com.tk.mediapicker.photopicker.bean.AlbumBean;
 import com.tk.mediapicker.photopicker.bean.AlbumFolderBean;
 import com.tk.mediapicker.photopicker.callback.OnFolderListener;
 import com.tk.mediapicker.photopicker.callback.OnLoadAlbumListener;
-import com.tk.mediapicker.photopicker.widget.AlbumItemDecoration;
+import com.tk.mediapicker.photopicker.ui.adapter.AlbumAdapter;
+import com.tk.mediapicker.photopicker.ui.adapter.AlbumAdapter.OnAlbumSelectListener;
 import com.tk.mediapicker.photopicker.utils.AlbumUtils;
 import com.tk.mediapicker.photopicker.utils.DateUtils;
+import com.tk.mediapicker.photopicker.widget.AlbumItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,8 @@ public class AlbumFragment extends Fragment implements OnLoadAlbumListener {
     private OnFolderListener onFolderListener;
     private OnAlbumSelectListener onAlbumSelectListener;
     private OnScrollListener onScrollListener;
+    private boolean hasInit;
+    private boolean hasPermission;
 
     @Override
     public void onAttach(Context context) {
@@ -84,9 +86,27 @@ public class AlbumFragment extends Fragment implements OnLoadAlbumListener {
         recyclerview.setAdapter(albumAdapter);
         onScrollListener = new OnScrollListener();
         recyclerview.addOnScrollListener(onScrollListener);
-        //初始化数据源
-        AlbumUtils.initAlbumData(getActivity(), this);
+        hasInit = true;
+        if (hasPermission) {
+            AlbumUtils.initAlbumData(getActivity(), this);
+        }
     }
+
+    public void setHasPermission(boolean hasPermission) {
+        this.hasPermission = hasPermission;
+    }
+
+    /**
+     * 初始化数据源
+     */
+    public void initData() {
+        hasPermission = true;
+        if (hasInit) {
+            AlbumUtils.initAlbumData(getActivity(), this);
+        }
+
+    }
+
 
     /**
      * load加载完毕，只调用一次

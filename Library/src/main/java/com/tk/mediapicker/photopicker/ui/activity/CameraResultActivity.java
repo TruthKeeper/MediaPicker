@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tk.mediapicker.R;
+import com.tk.mediapicker.common.PermissionHelper;
 import com.tk.mediapicker.photopicker.Constants;
 import com.tk.mediapicker.photopicker.utils.CameraUtils;
 import com.tk.mediapicker.photopicker.widget.ConfirmButton;
@@ -54,6 +56,38 @@ public class CameraResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restroreData(savedInstanceState);
+        //校验权限
+        int result = PermissionHelper.getPermission(this, PermissionHelper.PHOTO_PERMISSIONS);
+        if (result == -1) {
+            finish();
+        }
+        if (result == 1) {
+            init();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionHelper.checkOnResult(requestCode, permissions, grantResults, new PermissionHelper.OnPermissionListener() {
+            @Override
+            public void onFailure(String[] failurePermissions) {
+                Toast.makeText(getApplicationContext(), R.string.permission_camera_null, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onSuccess() {
+                init();
+            }
+        });
+    }
+
+    /**
+     * 初始化
+     */
+    private void init() {
+
         if (!hasStart) {
             hasStart = true;
             startCamera();
