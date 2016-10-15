@@ -1,5 +1,4 @@
 # Built application files
-*.apk
 *.ap_
 
 # Files for the ART/Dalvik VM
@@ -38,3 +37,14 @@ captures/
 
 # Keystore files
 *.jks
+.idea/compiler.xml
+.idea/copyright/
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+Library/libs/
+Library/src/main/java/com/tk/mediapicker/videopicker/
+app/libs/
+app/src/main/res/drawable/
