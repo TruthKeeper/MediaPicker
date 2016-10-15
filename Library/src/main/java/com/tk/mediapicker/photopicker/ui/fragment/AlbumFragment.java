@@ -69,9 +69,9 @@ public class AlbumFragment extends Fragment implements OnLoadAlbumListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         showAnim = new AlphaAnimation(0f, 1f);
-        showAnim.setDuration(750);
+        showAnim.setDuration(1000);
         dismissAnim = new AlphaAnimation(1f, 0f);
-        dismissAnim.setDuration(750);
+        dismissAnim.setDuration(1000);
         gridLayoutManager = new GridLayoutManager(mContext, 3);
         recyclerview.setLayoutManager(gridLayoutManager);
         recyclerview.setHasFixedSize(true);
@@ -148,7 +148,6 @@ public class AlbumFragment extends Fragment implements OnLoadAlbumListener {
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             //顶部时间条的显示
-            //// TODO: 2016/9/28
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && photoTip.getVisibility() == View.VISIBLE) {
                 photoTip.setVisibility(View.GONE);

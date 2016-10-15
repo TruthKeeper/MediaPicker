@@ -3,7 +3,7 @@
     android:id="@+id/header_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/top_tab_height"
-    android:background="@color/header_background"
+    android:background="@color/dark_and_transparent"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -29,18 +29,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
-        android:text="图片"
         android:textColor="@android:color/white"
         android:textSize="17sp" />
 
-    <com.tk.mediapicker.photopicker.widget.ConfirmButton
-        android:id="@+id/confirm_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:paddingTop="5dp"
-        android:text="完成" />
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_header_button"
+        android:clickable="true"
+        android:padding="16dp"
+        android:src="@drawable/vector_delete_shit" />
 </LinearLayout>

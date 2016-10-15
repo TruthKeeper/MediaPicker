@@ -6,11 +6,17 @@
 
     <color name="dark_v0">#FFD8D8D8</color>
     <color name="dark_v1">#FFA7A7A7</color>
+
     <color name="camera_normal">#FF353535</color>
     <color name="camera_press">#FF000000</color>
     <color name="camera_normal_text">#FFFFFFFF</color>
     <color name="camera_press_text">#FF666666</color>
+
     <color name="folder_text_normal">#FFCFCFCF</color>
     <color name="folder_text_press">#FF353535</color>
     <color name="folder_text_no_enable">#FF868989</color>
+    <color name="dark_and_transparent">#BB000000</color>
+
+    <color name="header_background">#FF393A3F</color>
+    <color name="button_press">#FF292929</color>
 </resources>

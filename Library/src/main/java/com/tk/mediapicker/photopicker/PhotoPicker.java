@@ -25,6 +25,7 @@ import static com.tk.mediapicker.photopicker.Constants.PhotoPickConstants.START_
 
 /**
  * Created by TK on 2016/9/26.
+ * 图片选择
  */
 
 public final class PhotoPicker {

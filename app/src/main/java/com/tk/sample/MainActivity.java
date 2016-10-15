@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tk.mediapicker.photopicker.PhotoPicker;
+import com.tk.mediapicker.photopicker.PhotoPreviewer;
 import com.tk.mediapicker.photopicker.callback.CompressCallback;
 import com.tk.mediapicker.photopicker.callback.PhotoCallback;
 import com.tk.mediapicker.photopicker.utils.FileUtils;
@@ -59,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
         preAdapter.setOnPreClickListener(new NinePreAdapter.OnPreClickListener() {
             @Override
             public void onPre(int position) {
-                fileList.remove(position);
-                preAdapter.notifyItemRemoved(position);
+                PhotoPreviewer.prePhotos(MainActivity.this, 5, fileList, position);
             }
 
             @Override
@@ -114,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 4:
                 PhotoPicker.onActivityResult(resultCode, data, checkbox1.isChecked() ? new FriendCompressCallBack(this) : new FriendCallBack());
+                break;
+            case 5:
+                List<File> tempList = PhotoPreviewer.onActivityResult(resultCode, data);
+                if (tempList != null) {
+                    fileList.clear();
+                    fileList.addAll(tempList);
+                    preAdapter.notifyDataSetChanged();
+                }
                 break;
         }
 

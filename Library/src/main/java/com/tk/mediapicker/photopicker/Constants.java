@@ -47,11 +47,12 @@ public final class Constants {
 
 
     /**
-     * 相册 to 普通预览传递参数
+     * to 预览照片传递参数
      */
-    public static final String PRE_LIST = "preview_list";
-    public static final String PRE_INDEX = PreAlbumConstants.INDEX;
-    //回调修改结果
-    public static final String RES_LIST = "result_list";
+    public static final class PrePhotoConstants {
+        public static final String REQUEST_DATA = "request_date";
+        //选择限制
+        public static final String INDEX = "index";
+    }
 
 }

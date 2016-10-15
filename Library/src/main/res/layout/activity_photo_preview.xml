@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/photoview"
+    <com.tk.mediapicker.photopicker.widget.HackyViewPager
+        android:id="@+id/photo_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black" />
+        android:layout_height="match_parent" />
 
-    <include layout="@layout/include_header" />
+    <include layout="@layout/header_preview" />
+
+
 </RelativeLayout>

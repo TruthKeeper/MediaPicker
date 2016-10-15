@@ -24,6 +24,11 @@
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".photopicker.ui.activity.PhotoPreActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.tk.mediapicker.photopicker.AlbumModule"

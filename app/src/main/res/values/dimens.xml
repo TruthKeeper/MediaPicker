@@ -1,3 +1,4 @@
 <resources>
     <dimen name="small_avatar">64dp</dimen>
+    <dimen name="normal_avatar">90dp</dimen>
 </resources>
