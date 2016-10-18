@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker.widget;
+package com.tk.mediapicker.common.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -10,9 +10,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
 
-import com.tk.mediapicker.photopicker.PhotoPicker;
 import com.tk.mediapicker.common.DensityUtil;
-import com.tk.mediapicker.photopicker.utils.ThemeUtils;
+import com.tk.mediapicker.common.ThemeUtils;
 
 /**
  * Created by TK on 2016/9/28.
@@ -52,7 +51,7 @@ public class ConfirmButton extends TextView {
         setTextSize(14);
         paint.setDither(true);
         paint.setAntiAlias(true);
-        colors = ThemeUtils.initNewColor(PhotoPicker.themeColor);
+        colors = ThemeUtils.initNewColor(ThemeUtils.themeColor);
         int r = DensityUtil.dp2px(getContext(), RADIUS);
         float[] outR = new float[]{r, r, r, r, r, r, r, r};
         RoundRectShape enableShape = new RoundRectShape(outR, null, null);

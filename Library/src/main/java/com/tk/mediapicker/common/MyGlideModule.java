@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker;
+package com.tk.mediapicker.common;
 
 import android.content.Context;
 
@@ -11,7 +11,7 @@ import com.bumptech.glide.module.GlideModule;
  * Created by TK on 2016/9/29.
  */
 
-public class AlbumModule implements GlideModule {
+public class MyGlideModule implements com.bumptech.glide.module.GlideModule {
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);

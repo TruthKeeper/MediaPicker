@@ -1,4 +1,4 @@
-package com.tk.mediapicker.common;
+package com.tk.mediapicker.common.utils;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,15 +12,24 @@ import java.util.List;
 
 /**
  * Created by TK on 2016/10/15.
+ * 6.0+权限
  */
 
 public class PermissionHelper {
     public static final int PERMISSION_REQUEST = 10000;
+    /**
+     * PhotoPicker额外权限
+     */
     public static final String[] PHOTO_PERMISSIONS = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
+    /**
+     * VideoPicker额外权限
+     */
     public static final String[] VIDEO_PERMISSIONS = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
+
 
     /**
      * 入口6.0以上获取权限

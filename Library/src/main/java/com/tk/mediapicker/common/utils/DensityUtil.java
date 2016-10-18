@@ -1,4 +1,4 @@
-package com.tk.mediapicker.common;
+package com.tk.mediapicker.common.utils;
 
 import android.content.Context;
 

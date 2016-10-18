@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker;
+package com.tk.mediapicker.common;
 
 
 /**
@@ -14,7 +14,7 @@ public final class Constants {
     public static final int DEFAULT_REQUEST = 2335;
 
     /**
-     * PhotoPick参数
+     * PhotoPicker参数
      */
     public static final class PhotoPickConstants {
         public static final int DEFAULT_LIMIT = 9;
@@ -55,4 +55,17 @@ public final class Constants {
         public static final String INDEX = "index";
     }
 
+    /**
+     * VideoPicker参数
+     */
+    public static final class VideoPickerConstants {
+        public static final int DEFAULT_LIMIT = 9;
+        public static final String START_REC = "start_rec";
+        public static final String IS_SINGLE = "is_single";
+        public static final String CHECK_LIMIT = "check_limit";
+        public static final String SHOW_REC = "show_rec";
+        //回调视频结果 flag=true data为单个，false，data为list，仅对结果处理，不与IS_SINGLE对应
+        public static final String RESULT_SINGLE = "result_single";
+        public static final String RESULT_DATA = "result_data";
+    }
 }

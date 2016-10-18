@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker.widget;
+package com.tk.mediapicker.common.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,14 +13,14 @@ import com.tk.mediapicker.common.DensityUtil;
 /**
  * Created by TK on 2016/9/26.
  */
-public class AlbumItemDecoration extends RecyclerView.ItemDecoration {    //网格线粗细
+public class ItemDecoration extends RecyclerView.ItemDecoration {    //网格线粗细
     public static final int DIVIDER = 2;
     private static final ColorDrawable DRAWABLE = new ColorDrawable(0xFF191919);
     private Context mContext;
     private int divider;
     private int span;
 
-    public AlbumItemDecoration(Context mContext, int span) {
+    public ItemDecoration(Context mContext, int span) {
         this.mContext = mContext;
         this.span = span;
         divider = DensityUtil.dp2px(mContext, DIVIDER);

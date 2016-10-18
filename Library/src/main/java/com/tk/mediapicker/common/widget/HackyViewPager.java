@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker.widget;
+package com.tk.mediapicker.common.widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

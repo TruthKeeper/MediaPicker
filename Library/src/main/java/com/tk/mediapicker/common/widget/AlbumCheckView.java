@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker.widget;
+package com.tk.mediapicker.common.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,8 +13,8 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.tk.mediapicker.photopicker.PhotoPicker;
 import com.tk.mediapicker.common.DensityUtil;
+import com.tk.mediapicker.common.ThemeUtils;
 
 
 /**
@@ -52,7 +52,7 @@ public class AlbumCheckView extends View {
     private void init() {
         //硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        themeColor = PhotoPicker.themeColor;
+        themeColor = ThemeUtils.themeColor;
 
         padding = DensityUtil.dp2px(getContext(), PADDING);
         radius = DensityUtil.dp2px(getContext(), RADIUS);

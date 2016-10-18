@@ -1,4 +1,4 @@
-package com.tk.mediapicker.photopicker.utils;
+package com.tk.mediapicker.common.utils;
 
 import android.graphics.Color;
 
@@ -7,6 +7,7 @@ import android.graphics.Color;
  */
 
 public class ThemeUtils {
+    public static int themeColor = 0xFF45C01A;
     /**
      * 生成新的颜色
      *
