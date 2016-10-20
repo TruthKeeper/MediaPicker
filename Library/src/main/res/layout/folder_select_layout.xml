@@ -7,18 +7,29 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.tk.mediapicker.photopicker.widget.FolderLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        android:paddingRight="5dp">
+    <com.tk.mediapicker.widget.FolderLayout
+        android:layout_width="79dp"
+        android:layout_height="78dp">
 
         <ImageView
             android:id="@+id/item"
             android:layout_width="74dp"
             android:layout_height="74dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:scaleType="centerCrop" />
-    </com.tk.mediapicker.photopicker.widget.FolderLayout>
+
+        <ImageView
+            android:id="@+id/video_cover"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="#50000000"
+            android:padding="20dp"
+            android:src="@drawable/vector_video"
+            android:visibility="gone" />
+    </com.tk.mediapicker.widget.FolderLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -45,7 +56,7 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <com.tk.mediapicker.photopicker.widget.FolderCheckView
+    <com.tk.mediapicker.widget.FolderCheckView
         android:id="@+id/indicator"
         android:layout_width="16dp"
         android:layout_height="16dp"

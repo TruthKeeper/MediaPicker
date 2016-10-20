@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="PhotoPicker"
+                android:text="MediaPicker"
                 android:textAllCaps="false"
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="22sp" />
@@ -34,7 +34,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" * 50k以下不压缩；\n* 150k以下一档 → 60k左右；\n* 150k以上三挡 → 一般不超过150k；" />
+            android:text="图片压缩策略：\n * 50k以下不压缩；\n* 150k以下一档 → 60k左右；\n* 150k以上三挡 → 一般不超过150k；\n\n视频压缩策略：\n"
+            android:textColor="@android:color/holo_green_light" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="选一张带裁剪(头像模式)"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,11 +85,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="选一张带裁剪(头像模式)" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +115,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="选多张无裁剪(朋友圈模式)" />
+            android:text="选多张无裁剪(朋友圈模式)"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -120,28 +126,48 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:text="选多张(IM)"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="VideoPicker"
-                android:textAllCaps="false"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="22sp" />
+        <Button
+            android:id="@+id/select_im"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="选多张(IM)仅仅看看 " />
 
-            <CheckBox
-                android:id="@+id/checkbox2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="点我开启智能压缩模式" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/video_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/video_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="16sp" />
+
+
+        <Button
+            android:id="@+id/start_rec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始录像 " />
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

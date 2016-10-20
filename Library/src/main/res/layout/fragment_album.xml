@@ -12,7 +12,7 @@
         android:paddingTop="1dp" />
 
     <TextView
-        android:id="@+id/photo_tip"
+        android:id="@+id/tip"
         android:layout_width="match_parent"
         android:layout_height="28dp"
         android:layout_alignParentTop="true"

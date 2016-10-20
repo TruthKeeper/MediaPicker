@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.tk.mediapicker.photopicker.utils.FileUtils;
+import com.tk.mediapicker.utils.FileUtils;
 
 import java.io.File;
 import java.util.List;

@@ -7,18 +7,17 @@
     <include layout="@layout/include_header" />
 
     <FrameLayout
-        android:id="@+id/main_album"
+        android:id="@+id/main_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header_layout" />
-
 
     <LinearLayout
         android:id="@+id/floder_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/main_album"
+        android:layout_alignTop="@+id/main_video"
         android:orientation="vertical">
 
         <LinearLayout
@@ -110,4 +109,5 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
 </RelativeLayout>

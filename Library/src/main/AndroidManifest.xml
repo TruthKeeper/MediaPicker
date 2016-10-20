@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
         android:allowBackup="true"
@@ -10,28 +11,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".photopicker.ui.activity.AlbumActivity"
+            android:name=".ui.activity.AlbumActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photopicker.ui.activity.AlbumPreActivity"
+            android:name=".ui.activity.AlbumPreActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photopicker.ui.activity.CameraResultActivity"
+            android:name=".ui.activity.CameraResultActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photopicker.ui.activity.PhotoPreActivity"
+            android:name=".ui.activity.PhotoPreActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RECAResultActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
 
         <meta-data
-            android:name="com.tk.mediapicker.photopicker.AlbumModule"
+            android:name="com.tk.mediapicker.MyGlideModule"
             android:value="GlideModule" />
 
     </application>

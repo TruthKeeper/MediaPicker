@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Luban-1.0.8">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Library/build/intermediates/exploded-aar/top.zibin/Luban/1.0.8/res" />
+      <root url="jar://$PROJECT_DIR$/Library/build/intermediates/exploded-aar/top.zibin/Luban/1.0.8/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/top.zibin/Luban/1.0.8/3258c94846751098a1aa2072f67c0b4e5c9f335/Luban-1.0.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

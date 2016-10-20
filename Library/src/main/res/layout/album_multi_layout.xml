@@ -9,6 +9,19 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:id="@+id/video_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="8dp"
+        android:background="@null"
+        android:elevation="6dp"
+        android:src="@drawable/vector_rec"
+        android:visibility="gone" />
+
     <View
         android:id="@+id/cover"
         android:layout_width="match_parent"
@@ -16,12 +29,13 @@
         android:background="#60000000"
         android:visibility="gone" />
 
-    <com.tk.mediapicker.photopicker.widget.AlbumCheckView
+    <com.tk.mediapicker.widget.AlbumCheckView
         android:id="@+id/indicator"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:elevation="6dp"
         android:paddingBottom="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="8dp"
