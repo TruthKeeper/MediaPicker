@@ -20,6 +20,7 @@ import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
 import com.tk.mediapicker.bean.MediaBean;
 import com.tk.mediapicker.ui.adapter.AlbumPreAdapter;
+import com.tk.mediapicker.ui.adapter.MediaPreAdapter;
 import com.tk.mediapicker.widget.AlbumCheckView;
 import com.tk.mediapicker.widget.ConfirmButton;
 import com.tk.mediapicker.widget.HackyViewPager;
@@ -34,7 +35,7 @@ import java.util.List;
  * 相册预览List
  */
 
-public class AlbumPreActivity extends BaseActivity implements ViewPager.OnPageChangeListener, AlbumPreAdapter.OnPhotoListener, View.OnClickListener {
+public class AlbumPreActivity extends BaseActivity implements ViewPager.OnPageChangeListener, MediaPreAdapter.OnMediaClickListener, View.OnClickListener {
 
     private ImageView back;
     private HackyViewPager albumViewpager;
@@ -72,7 +73,7 @@ public class AlbumPreActivity extends BaseActivity implements ViewPager.OnPageCh
 
         albumViewpager.setOffscreenPageLimit(3);
         albumViewpager.addOnPageChangeListener(this);
-        albumPreAdapter.setOnPhotoListener(this);
+        albumPreAdapter.setOnMediaClickListener(this);
 
     }
 

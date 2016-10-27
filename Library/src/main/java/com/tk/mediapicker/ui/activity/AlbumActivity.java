@@ -171,8 +171,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
         } else if (view.getId() == R.id.confirm_btn) { //完成选择，回调
             Intent intent = new Intent();
             List<MediaBean> checkList = albumFragment.getSelectList();
-            if (bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT) == 1
-                    || checkList.size() == 1) {
+            if (checkList.size() == 1) {
                 intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
                 intent.putExtra(Constants.MediaPickerConstants.RESULT_DATA, checkList.get(0).getPath());
             } else {

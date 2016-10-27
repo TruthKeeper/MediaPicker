@@ -26,9 +26,8 @@ import static com.tk.mediapicker.Constants.MediaPickerConstants.*;
 public final class MediaPicker {
     public static final String TAG = "MediaPicker";
 
-    public static final Builder builder() {
+    public static Builder builder() {
         return new Builder();
-
     }
 
     public static final class Builder {
@@ -161,7 +160,7 @@ public final class MediaPicker {
      * @param data
      * @param callback
      */
-    public static final void onMediaResult(int resultCode, Intent data, Callback callback) {
+    public static void onMediaResult(int resultCode, Intent data, Callback callback) {
         if (resultCode != Activity.RESULT_OK || callback == null || data == null) {
             return;
         }

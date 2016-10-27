@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +17,6 @@ import com.tk.mediapicker.MediaPicker;
 import com.tk.mediapicker.MediaPreviewer;
 import com.tk.mediapicker.callback.Callback;
 import com.tk.mediapicker.callback.CompressCallback;
-import com.tk.mediapicker.utils.AlbumUtils;
 import com.tk.mediapicker.utils.FileUtils;
 
 import java.io.File;
@@ -28,13 +26,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.checkbox1)
     CheckBox checkbox1;
     @BindView(R.id.iv_show)
-    ImageView ivShow;
+    CircleImageView ivShow;
     @BindView(R.id.upload_size)
     TextView uploadSize;
     @BindView(R.id.upload_path)
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 MediaPicker.onMediaResult(resultCode, data, new Callback() {
                     @Override
                     public void onComplete(File source) {
-                        Log.e("onComplete", source.getAbsolutePath() + "\n" + AlbumUtils.getFormatSize(source.length()));
+                        Log.e("onComplete", source.getAbsolutePath() + "\n" + FileUtils.getFileSize(source));
                     }
 
                     @Override
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     .override(s, s)
                     .centerCrop()
                     .into(ivShow);
-            uploadSize.setText(FileUtils.getImaSize(source));
+            uploadSize.setText(FileUtils.getFileSize(source));
             uploadPath.setText(source.getAbsolutePath());
         }
 
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     .override(s, s)
                     .centerCrop()
                     .into(ivShow);
-            uploadSize.setText(FileUtils.getImaSize(compressFile));
+            uploadSize.setText(FileUtils.getFileSize(compressFile));
             uploadPath.setText(compressFile.getAbsolutePath());
         }
 

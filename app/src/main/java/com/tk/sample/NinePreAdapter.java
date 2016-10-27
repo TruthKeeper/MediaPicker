@@ -67,7 +67,7 @@ public class NinePreAdapter extends RecyclerView.Adapter<ViewHolder> {
             Glide.with(mContext).load(mList.get(position))
                     .asBitmap()
                     .into(((ItemHolder) holder).item);
-            ((ItemHolder) holder).textview.setText(FileUtils.getImaSize(mList.get(position)));
+            ((ItemHolder) holder).textview.setText(FileUtils.getFileSize(mList.get(position)));
         }
     }
 

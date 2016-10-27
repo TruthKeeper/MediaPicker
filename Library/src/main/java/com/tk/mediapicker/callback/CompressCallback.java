@@ -2,6 +2,8 @@ package com.tk.mediapicker.callback;
 
 import android.content.Context;
 
+import com.tk.mediapicker.utils.FileUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,35 +33,43 @@ public abstract class CompressCallback implements Callback {
     @Override
     public void onComplete(File source) {
         onStart();
-        int gear = calculGear(source);
-        if (gear == -1) {
-            onSuccess(source);
-            onFinish();
-            return;
+        if (FileUtils.isVideo(source.getName())) {
+
+        } else {
+            int gear = calculGear(source);
+            if (gear == -1) {
+                onSuccess(source);
+                onFinish();
+                return;
+            }
+            Luban.get(mContext)
+                    .load(source)
+                    .putGear(gear)
+                    .asObservable()
+                    .doOnTerminate(this::onFinish)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(throwable -> {
+                        throwable.printStackTrace();
+                        onFailure(throwable);
+                    })
+                    .subscribe(this::onSuccess);
         }
-        Luban.get(mContext)
-                .load(source)
-                .putGear(gear)
-                .asObservable()
-                .doOnTerminate(() -> onFinish())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(throwable -> {
-                    throwable.printStackTrace();
-                    onFailure(throwable);
-                })
-                .subscribe(file -> {
-                    onSuccess(file);
-                });
     }
 
     @Override
     public void onComplete(List<File> sourceList) {
-        if (sourceList.size() == 1) {
-            onComplete(sourceList.get(0));
-            return;
-        }
         onStart();
+        List<File> videoList = new ArrayList<>();
+        List<File> photoList = new ArrayList<>();
+        for (File file : sourceList) {
+            if (FileUtils.isVideo(file.getName())) {
+                videoList.add(file);
+            } else {
+                photoList.add(file);
+            }
+        }
+
         List<Observable<File>> obserableList = new ArrayList<Observable<File>>();
         List<File> resultList = new ArrayList<File>();
         for (int i = 0; i < sourceList.size(); i++) {
@@ -77,7 +87,7 @@ public abstract class CompressCallback implements Callback {
             }
         }
         Observable.merge(obserableList, 1)
-                .doOnTerminate(() -> onFinish())
+                .doOnTerminate(this::onFinish)
                 .subscribe(new Observer<File>() {
                     @Override
                     public void onCompleted() {

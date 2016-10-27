@@ -11,22 +11,22 @@ import android.widget.TextView;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
 import com.tk.mediapicker.Constants;
-import com.tk.mediapicker.ui.adapter.PhotoPreAdapter;
+import com.tk.mediapicker.ui.adapter.MediaPreAdapter;
 import com.tk.mediapicker.widget.HackyViewPager;
 
 import java.util.ArrayList;
 
 /**
  * Created by TK on 2016/10/14.
- * 外部查看photo list的入口
+ * 外部查看Media list的入口
  */
 
-public class PhotoPreActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MediaPreActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private HackyViewPager photoviewpager;
     private ImageView back;
     private TextView title;
     private ImageView delete;
-    private PhotoPreAdapter photoPreAdapter;
+    private MediaPreAdapter mediaPreAdapter;
     private ArrayList<String> fileList;
 
     @Override
@@ -45,8 +45,8 @@ public class PhotoPreActivity extends BaseActivity implements View.OnClickListen
             throw new IllegalArgumentException("fileList is null!");
         }
         title.setText((index + 1) + "/" + fileList.size());
-        photoPreAdapter = new PhotoPreAdapter(this, fileList);
-        photoviewpager.setAdapter(photoPreAdapter);
+        mediaPreAdapter = new MediaPreAdapter(this, fileList);
+        photoviewpager.setAdapter(mediaPreAdapter);
         photoviewpager.setCurrentItem(index);
         photoviewpager.addOnPageChangeListener(this);
     }
@@ -62,8 +62,8 @@ public class PhotoPreActivity extends BaseActivity implements View.OnClickListen
             } else {
                 int index = photoviewpager.getCurrentItem();
                 fileList.remove(index);
-                photoPreAdapter.notifyDataSetChanged();
-                photoviewpager.setAdapter(photoPreAdapter);
+                mediaPreAdapter.notifyDataSetChanged();
+                photoviewpager.setAdapter(mediaPreAdapter);
                 if (fileList.size() > index) {
                     photoviewpager.setCurrentItem(index, false);
                     title.setText((index + 1) + "/" + fileList.size());

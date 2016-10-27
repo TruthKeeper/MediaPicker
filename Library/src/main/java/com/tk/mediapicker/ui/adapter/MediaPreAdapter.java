@@ -13,35 +13,34 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tk.mediapicker.R;
-import com.tk.mediapicker.bean.MediaBean;
 import com.tk.mediapicker.utils.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 
 /**
- * Created by TK on 2016/9/29.
+ * Created by TK on 2016/10/14.
  * viewpager的预览adapter
  */
 
-public class AlbumPreAdapter extends PagerAdapter {
+public class MediaPreAdapter extends PagerAdapter {
     private LinkedList<View> mCacheList = new LinkedList<View>();
-    private List<MediaBean> albumList;
+    private ArrayList<String> fileList;
     private Context mContext;
-    private MediaPreAdapter.OnMediaClickListener onMediaClickListener;
+    private OnMediaClickListener onMediaClickListener;
     private LayoutInflater mInflater;
     private int w;
     private int h;
 
 
-    public AlbumPreAdapter(Context mContext, List<MediaBean> albumList) {
+    public MediaPreAdapter(Context mContext, ArrayList<String> fileList) {
         this.mContext = mContext;
-        this.albumList = albumList;
+        this.fileList = fileList;
         mInflater = LayoutInflater.from(mContext);
         w = mContext.getResources().getDisplayMetrics().widthPixels;
         h = mContext.getResources().getDisplayMetrics().heightPixels;
@@ -49,14 +48,14 @@ public class AlbumPreAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return albumList.size();
+        return fileList.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View contentView = null;
         PhotoView photoView;
-        if (albumList.get(position).isVideo()) {
+        if (FileUtils.isVideo(new File(fileList.get(position)).getName())) {
             if (mCacheList.size() != 0 && mCacheList.getFirst() instanceof RelativeLayout) {
                 //从缓存集合中取
                 contentView = mCacheList.removeFirst();
@@ -72,7 +71,7 @@ public class AlbumPreAdapter extends PagerAdapter {
                     }
                 }
             });
-            ((TextView) contentView.findViewById(R.id.size)).setText("视频大小：" + FileUtils.getFormatSize(albumList.get(position).getSize()));
+            ((TextView) contentView.findViewById(R.id.size)).setText("视频大小：" + FileUtils.getFileSize(new File(fileList.get(position))));
         } else {
             if (mCacheList.size() != 0 && mCacheList.getFirst() instanceof PhotoView) {
                 //从缓存集合中取
@@ -84,7 +83,7 @@ public class AlbumPreAdapter extends PagerAdapter {
         }
         final PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
         Glide.with(mContext)
-                .load(new File(albumList.get(position).getPath()))
+                .load(new File(fileList.get(position)))
                 .asBitmap()
                 .override(w, h)
                 .fitCenter()
@@ -116,7 +115,13 @@ public class AlbumPreAdapter extends PagerAdapter {
         return view == object;
     }
 
-    public void setOnMediaClickListener(MediaPreAdapter.OnMediaClickListener onMediaClickListener) {
+    public void setOnMediaClickListener(OnMediaClickListener onMediaClickListener) {
         this.onMediaClickListener = onMediaClickListener;
+    }
+
+    public interface OnMediaClickListener {
+        void onClick(int position);
+
+        void onClickVideo(int position);
     }
 }

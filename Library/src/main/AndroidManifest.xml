@@ -26,7 +26,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.PhotoPreActivity"
+            android:name=".ui.activity.MediaPreActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />

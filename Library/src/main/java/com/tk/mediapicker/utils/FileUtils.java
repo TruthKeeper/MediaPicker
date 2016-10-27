@@ -1,5 +1,7 @@
 package com.tk.mediapicker.utils;
 
+import android.text.TextUtils;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -9,6 +11,30 @@ import java.math.BigDecimal;
 
 public final class FileUtils {
 
+    /**
+     * 文件是否存在
+     *
+     * @param path
+     * @return
+     */
+    public static boolean exists(String path) {
+        if (!TextUtils.isEmpty(path)) {
+            return new File(path).exists();
+        }
+        return false;
+    }
+
+    /**
+     * 是否视频文件
+     *
+     * @param fileName
+     * @return
+     */
+    public static boolean isVideo(String fileName) {
+        return !(fileName.endsWith(".jpeg") || fileName.endsWith(".png")
+                || fileName.endsWith(".jpg") || fileName.endsWith(".gif")
+                || fileName.endsWith(".bmp"));
+    }
 
     /**
      * 读取图片大小
@@ -16,7 +42,7 @@ public final class FileUtils {
      * @param file
      * @return
      */
-    public static final String getImaSize(File file) {
+    public static String getFileSize(File file) {
         return getFormatSize(file.length());
     }
 
@@ -26,7 +52,7 @@ public final class FileUtils {
      * @param size
      * @return
      */
-    private static final String getFormatSize(double size) {
+    public static String getFormatSize(double size) {
         double kiloByte = size / 1024;
         if (kiloByte < 1) {
 //            return size + "Byte";

@@ -3,7 +3,7 @@ package com.tk.mediapicker;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.tk.mediapicker.ui.activity.PhotoPreActivity;
+import com.tk.mediapicker.ui.activity.MediaPreActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public final class MediaPreviewer {
         for (int i = 0; i < fileList.size(); i++) {
             list.add(fileList.get(i).getAbsolutePath());
         }
-        Intent intent = new Intent(activity, PhotoPreActivity.class);
+        Intent intent = new Intent(activity, MediaPreActivity.class);
         intent.putStringArrayListExtra(Constants.PreMediaConstants.REQUEST_DATA, list);
         intent.putExtra(Constants.PreMediaConstants.INDEX, index);
         activity.startActivityForResult(intent, requestCode);
