@@ -31,7 +31,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.RECAResultActivity"
+            android:name=".ui.activity.RECResultActivity"
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />

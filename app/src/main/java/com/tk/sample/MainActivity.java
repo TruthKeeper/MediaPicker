@@ -7,16 +7,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tk.mediapicker.MediaPicker;
-import com.tk.mediapicker.MediaPreviewer;
 import com.tk.mediapicker.callback.Callback;
 import com.tk.mediapicker.callback.CompressCallback;
+import com.tk.mediapicker.request.AlbumRequest;
+import com.tk.mediapicker.request.CameraRequest;
+import com.tk.mediapicker.request.PreviewerRequest;
+import com.tk.mediapicker.request.RECRequest;
 import com.tk.mediapicker.utils.FileUtils;
 
 import java.io.File;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.checkbox1)
     CheckBox checkbox1;
+    @BindView(R.id.checkbox2)
+    CheckBox checkbox2;
     @BindView(R.id.iv_show)
     CircleImageView ivShow;
     @BindView(R.id.upload_size)
@@ -63,17 +68,22 @@ public class MainActivity extends AppCompatActivity {
         preAdapter.setOnPreClickListener(new NinePreAdapter.OnPreClickListener() {
             @Override
             public void onPre(int position) {
-                MediaPreviewer.prePhotos(MainActivity.this, 6, fileList, position);
+                MediaPicker.startRequest(new PreviewerRequest.Builder(MainActivity.this, 5, fileList)
+                        .setIndex(position)
+                        .build());
+
             }
 
             @Override
             public void onInsert(int other) {
-                MediaPicker.builder()
+                MediaPicker.startRequest(new AlbumRequest.Builder(MainActivity.this, 4)
+                        .needCrop(false)
                         .asSingle(false)
+                        .asSystem(checkbox2.isChecked())
                         .setCheckLimit(NinePreAdapter.MAX - fileList.size())
                         .showCameraIndex(true)
                         .showVideoContent(false)
-                        .startAlbum(MainActivity.this, 7);
+                        .build());
             }
         });
     }
@@ -82,37 +92,42 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show:
-                MediaPicker.builder()
+                MediaPicker.startRequest(new AlbumRequest.Builder(MainActivity.this, 1)
+                        .needCrop(true)
+                        .asSystem(checkbox2.isChecked())
                         .asSingle(true)
-                        .showVideoContent(false)
                         .showCameraIndex(true)
-                        .startAlbum(this, 1);
+                        .showVideoContent(false)
+                        .build());
                 break;
             case R.id.camera_and_crop:
-                MediaPicker.builder()
-                        .needCrop()
-                        .startCamera(this, 2);
+                MediaPicker.startRequest(new CameraRequest.Builder(MainActivity.this, 2)
+                        .needCrop(true)
+                        .build());
                 break;
             case R.id.album:
-                MediaPicker.builder()
+                MediaPicker.startRequest(new AlbumRequest.Builder(MainActivity.this, 3)
+                        .needCrop(true)
+                        .asSystem(checkbox2.isChecked())
                         .asSingle(true)
+                        .showCameraIndex(true)
                         .showVideoContent(false)
-                        .showCameraIndex(false)
-                        .needCrop()
-                        .startAlbum(this, 3);
+                        .build());
                 break;
             case R.id.select_im:
-                MediaPicker.builder()
+                MediaPicker.startRequest(new AlbumRequest.Builder(MainActivity.this, 6)
+                        .needCrop(false)
+                        .asSystem(checkbox2.isChecked())
                         .asSingle(false)
+                        .showCameraIndex(true)
+                        .setCheckLimit(NinePreAdapter.MAX)
                         .showVideoContent(true)
-                        .showCameraIndex(false)
-                        .setCheckLimit(3)
-                        .startAlbum(this, 4);
+                        .build());
                 break;
             case R.id.start_rec:
                 //开始录像
-                MediaPicker.builder()
-                        .startREC(this, 5);
+                MediaPicker.startRequest(new RECRequest.Builder(MainActivity.this, 7)
+                        .build());
                 break;
 
         }
@@ -135,33 +150,39 @@ public class MainActivity extends AppCompatActivity {
                         new AlbumCompressCallBack(this) : new AlbumCallBack());
                 break;
             case 4:
-                //仅仅看看
+                MediaPicker.onMediaResult(resultCode, data, checkbox1.isChecked() ?
+                        new FriendCompressCallBack(this) : new FriendCallBack());
                 break;
             case 5:
-                //录像
+                //预览结果
                 MediaPicker.onMediaResult(resultCode, data, new Callback() {
                     @Override
                     public void onComplete(File source) {
-                        Log.e("onComplete", source.getAbsolutePath() + "\n" + FileUtils.getFileSize(source));
                     }
 
                     @Override
                     public void onComplete(List<File> sourceList) {
-
+                        fileList.clear();
+                        fileList.addAll(sourceList);
+                        preAdapter.notifyDataSetChanged();
                     }
                 });
+
+
                 break;
             case 6:
-                List<File> tempList = MediaPreviewer.onActivityResult(resultCode, data);
-                if (tempList != null) {
-                    fileList.clear();
-                    fileList.addAll(tempList);
-                    preAdapter.notifyDataSetChanged();
-                }
-                break;
+                //IM
             case 7:
-                MediaPicker.onMediaResult(resultCode, data, checkbox1.isChecked() ?
-                        new FriendCompressCallBack(this) : new FriendCallBack());
+                MediaPicker.onMediaResult(resultCode, data, new Callback() {
+                    @Override
+                    public void onComplete(File source) {
+                        Toast.makeText(MainActivity.this, FileUtils.getFileSize(source) + "\n" + source.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onComplete(List<File> sourceList) {
+                    }
+                });
                 break;
         }
 

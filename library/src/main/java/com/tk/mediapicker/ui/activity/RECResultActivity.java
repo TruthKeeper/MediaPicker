@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
 import com.tk.mediapicker.utils.MediaUtils;
@@ -19,15 +20,13 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.tk.mediapicker.Constants.DEFAULT_REQUEST;
-import static com.tk.mediapicker.Constants.MediaPickerConstants.RESULT_DATA;
-import static com.tk.mediapicker.Constants.MediaPickerConstants.RESULT_SINGLE;
 
 
 /**
  * Created by TK on 2016/10/14.
  */
 
-public class RECAResultActivity extends BaseActivity {
+public class RECResultActivity extends BaseActivity {
     private File tempFile;
     private boolean hasStart;
 
@@ -116,12 +115,11 @@ public class RECAResultActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DEFAULT_REQUEST) {
+        if (requestCode == Constants.DEFAULT_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.e("onActivityResult", "RESULT_OK");
                 Intent intent = new Intent();
-                intent.putExtra(RESULT_SINGLE, true);
-                intent.putExtra(RESULT_DATA, tempFile.getAbsolutePath());
+                intent.putExtra(Constants.RESULT_SINGLE, true);
+                intent.putExtra(Constants.RESULT_DATA, tempFile.getAbsolutePath());
                 setResult(Activity.RESULT_OK, intent);
             } else {
                 clearTemp();
@@ -139,11 +137,5 @@ public class RECAResultActivity extends BaseActivity {
                 tempFile.delete();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e("onDestroy", "onDestroy");
     }
 }

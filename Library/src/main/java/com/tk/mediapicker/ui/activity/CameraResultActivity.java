@@ -196,7 +196,7 @@ public class CameraResultActivity extends BaseActivity {
                 clearTemp();
                 finish();
             } else {
-                if (getIntent().getExtras().getBoolean(Constants.MediaPickerConstants.NEED_CROP)) {
+                if (getIntent().getExtras().getBoolean(Constants.CameraRequestConstants.NEED_CROP, false)) {
                     //去裁剪
                     startCrop();
                 } else {
@@ -211,10 +211,10 @@ public class CameraResultActivity extends BaseActivity {
                 clearTemp();
                 finish();
             } else {
-                //将裁减结果回调给PhotoPicker
+                //将裁减结果回调
                 Intent intent = new Intent();
-                intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-                intent.putExtra(Constants.MediaPickerConstants.RESULT_DATA, tempCropFile.getAbsolutePath());
+                intent.putExtra(Constants.RESULT_SINGLE, true);
+                intent.putExtra(Constants.RESULT_DATA, tempCropFile.getAbsolutePath());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -252,8 +252,8 @@ public class CameraResultActivity extends BaseActivity {
         confirmBtn.setOnClickListener(v -> {
             //点击完成将拍照结果回调给PhotoPicker
             Intent data = new Intent();
-            data.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-            data.putExtra(Constants.MediaPickerConstants.RESULT_DATA, tempCameraFile.getAbsolutePath());
+            data.putExtra(Constants.RESULT_SINGLE, true);
+            data.putExtra(Constants.RESULT_DATA, tempCameraFile.getAbsolutePath());
             setResult(Activity.RESULT_OK, data);
             finish();
         });

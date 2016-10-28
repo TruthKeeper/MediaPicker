@@ -5,6 +5,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -22,26 +23,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tk.mediapicker.Constants;
+import com.tk.mediapicker.MediaPicker;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
 import com.tk.mediapicker.bean.MediaBean;
-import com.tk.mediapicker.utils.PermissionHelper;
-import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.bean.MediaFolderBean;
 import com.tk.mediapicker.callback.OnFolderListener;
+import com.tk.mediapicker.request.CameraRequest;
 import com.tk.mediapicker.ui.adapter.AlbumAdapter;
 import com.tk.mediapicker.ui.adapter.FolderAdapter;
 import com.tk.mediapicker.ui.fragment.AlbumFragment;
 import com.tk.mediapicker.utils.FolderUtils;
+import com.tk.mediapicker.utils.MediaUtils;
+import com.tk.mediapicker.utils.PermissionHelper;
 import com.tk.mediapicker.widget.ConfirmButton;
 import com.tk.mediapicker.widget.FolderItemDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.tk.mediapicker.R.id.folder_layout;
-import static com.tk.mediapicker.Constants.CROP_REQUEST;
 
 
 /**
@@ -78,6 +79,13 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = getIntent().getExtras();
+        if (bundle.getBoolean(Constants.AS_SYSTEM, false)) {
+            Intent intent = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, Constants.DEFAULT_REQUEST);
+            return;
+        }
         setContentView(R.layout.activity_album);
         initViews();
         initConstants();
@@ -135,7 +143,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
         folderText = (TextView) findViewById(R.id.folder_text);
 
         previewText = (TextView) findViewById(R.id.preview_text);
-        folderLayout = (LinearLayout) findViewById(folder_layout);
+        folderLayout = (LinearLayout) findViewById(R.id.folder_layout);
         previewLayout = (LinearLayout) findViewById(R.id.preview_layout);
         shadow = findViewById(R.id.shadow);
         shadowLayout = (LinearLayout) findViewById(R.id.shadow_layout);
@@ -148,17 +156,16 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     }
 
     /**
-     * 接收并处理PhotoPick的配置
+     * 接收并处理配置
      */
     private void initConstants() {
-        bundle = getIntent().getExtras();
-        if (bundle.getBoolean(Constants.MediaPickerConstants.IS_SINGLE)) {
+        if (bundle.getBoolean(Constants.AlbumRequestConstants.AS_SINGLE, true)) {
             //单选模式
             previewLayout.setVisibility(View.GONE);
             confirmBtn.setVisibility(View.GONE);
         }
         //刷新底部
-        if (bundle.getBoolean(Constants.MediaPickerConstants.SHOW_VIDEO)) {
+        if (bundle.getBoolean(Constants.AlbumRequestConstants.SHOW_VIDEO, false)) {
             folderText.setText(R.string.all_media);
         } else {
             folderText.setText(R.string.all_photo);
@@ -168,24 +175,27 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     public void onClick(View view) {
         if (view.getId() == R.id.back) {
             finish();
-        } else if (view.getId() == R.id.confirm_btn) { //完成选择，回调
+        } else if (view.getId() == R.id.confirm_btn) {
+            //完成选择，回调
             Intent intent = new Intent();
             List<MediaBean> checkList = albumFragment.getSelectList();
             if (checkList.size() == 1) {
-                intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-                intent.putExtra(Constants.MediaPickerConstants.RESULT_DATA, checkList.get(0).getPath());
+                intent.putExtra(Constants.RESULT_SINGLE, true);
+                intent.putExtra(Constants.RESULT_DATA, checkList.get(0).getPath());
             } else {
-                intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, false);
-                intent.putParcelableArrayListExtra(Constants.MediaPickerConstants.RESULT_DATA, new ArrayList<>(checkList));
+                intent.putExtra(Constants.RESULT_SINGLE, false);
+                intent.putStringArrayListExtra(Constants.RESULT_DATA, MediaUtils.beanToPathList(checkList));
             }
             setResult(Activity.RESULT_OK, intent);
             finish();
-        } else if (view.getId() == folder_layout) {//文件夹
+        } else if (view.getId() == R.id.folder_layout) {
+            //文件夹
             if (animLock || mediaFolderList.size() <= 1) {
                 return;
             }
             startFolderAnim();
-        } else if (view.getId() == R.id.preview_layout) {   //预览已选中的Album List
+        } else if (view.getId() == R.id.preview_layout) {
+            //预览已选中的Album List
             if (albumFragment.getSelectList().size() == 0) {
                 return;
             }
@@ -193,7 +203,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             preIntent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getSelectList()));
             preIntent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
             preIntent.putExtra(Constants.PreAlbumConstants.INDEX, 0);
-            preIntent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT));
+            preIntent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT));
             startActivityForResult(preIntent, Constants.PreAlbumConstants.PRE_REQUEST);
 
         } else if (view.getId() == R.id.shadow) {
@@ -217,7 +227,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (folderRecyclerview.getVisibility() == View.VISIBLE) {
+            if (folderRecyclerview != null && folderRecyclerview.getVisibility() == View.VISIBLE) {
                 startFolderAnim();
                 return true;
             }
@@ -340,9 +350,9 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
      */
     @Override
     public void onCamera() {
-        Intent intent = new Intent(this, CameraResultActivity.class);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, Constants.DEFAULT_REQUEST);
+        MediaPicker.startRequest(new CameraRequest.Builder(this, Constants.CAMERA_REQUEST)
+                .needCrop(bundle.getBoolean(Constants.AlbumRequestConstants.NEED_CROP, false))
+                .build());
     }
 
     /**
@@ -352,27 +362,28 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
      */
     @Override
     public void onAlbumClick(int position) {
-        if (bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT) != 1) {
-            //预览AlbumList
-            Intent intent = new Intent(this, AlbumPreActivity.class);
-            intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getMediaList()));
-            intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
-            intent.putExtra(Constants.PreAlbumConstants.INDEX, position);
-            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT));
-            startActivityForResult(intent, Constants.PreAlbumConstants.PRE_REQUEST);
-        } else {
-            if (bundle.getBoolean(Constants.MediaPickerConstants.NEED_CROP, false)) {
+        if (bundle.getBoolean(Constants.AlbumRequestConstants.AS_SINGLE, true)) {
+            if (bundle.getBoolean(Constants.AlbumRequestConstants.NEED_CROP, false)) {
                 //裁剪后再回调
                 MediaBean bean = albumFragment.getMediaList().get(position);
-                startCrop(new File(bean.getPath()));
+                startCrop(new File(bean.getPath()), Constants.CROP_REQUEST);
             } else {
                 //直接回调
                 Intent data = new Intent();
-                data.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-                data.putExtra(Constants.MediaPickerConstants.RESULT_DATA, albumFragment.getMediaList().get(position).getPath());
+                data.putExtra(Constants.RESULT_SINGLE, true);
+                data.putExtra(Constants.RESULT_DATA, albumFragment.getMediaList().get(position).getPath());
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }
+        } else {
+            //预览AlbumList
+            Intent intent = new Intent(this, AlbumPreActivity.class);
+
+            intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getMediaList()));
+            intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
+            intent.putExtra(Constants.PreAlbumConstants.INDEX, position);
+            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT));
+            startActivityForResult(intent, Constants.PreAlbumConstants.PRE_REQUEST);
         }
     }
 
@@ -381,10 +392,10 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
         //点击触发刷新ui
         if (select != 0) {
             previewText.setText("预览(" + select + ")");
-            if (bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT, 1) == 1 && select == 1) {
+            if (bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1) == 1 && select == 1) {
                 confirmBtn.setText("完成");
             } else {
-                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT) + ")");
+                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT) + ")");
             }
             previewText.setEnabled(true);
             confirmBtn.setEnabled(true);
@@ -399,6 +410,42 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.DEFAULT_REQUEST) {
+            if (resultCode != Activity.RESULT_OK) {
+                finish();
+                return;
+            }
+            //系统相册处理结果
+            Uri imageUri = data.getData();
+            String[] filePathColumns = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(imageUri, filePathColumns, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumns[0]);
+            String imagePath = cursor.getString(columnIndex);
+            cursor.close();
+            if (bundle.getBoolean(Constants.AlbumRequestConstants.NEED_CROP, false)) {
+                startCrop(new File(imagePath), Constants.DEFAULT_PLUS_REQUEST);
+                return;
+            }
+            Intent intent = new Intent();
+            intent.putExtra(Constants.RESULT_SINGLE, true);
+            intent.putExtra(Constants.RESULT_DATA, imagePath);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+            return;
+        }
+        if (requestCode == Constants.DEFAULT_PLUS_REQUEST) {
+            if (resultCode != Activity.RESULT_OK) {
+                finish();
+                return;
+            }
+            //系统相册+裁剪处理结果
+            Intent intent = new Intent();
+            intent.putExtra(Constants.RESULT_SINGLE, true);
+            intent.putExtra(Constants.RESULT_DATA, tempCropFile.getPath());
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -408,11 +455,11 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
                 List<MediaBean> checkList = data.getParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST);
                 Intent intent = new Intent();
                 if (checkList.size() == 1) {
-                    intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-                    intent.putExtra(Constants.MediaPickerConstants.RESULT_DATA, checkList.get(0).getPath());
+                    intent.putExtra(Constants.RESULT_SINGLE, true);
+                    intent.putExtra(Constants.RESULT_DATA, checkList.get(0).getPath());
                 } else {
-                    intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, false);
-                    intent.putParcelableArrayListExtra(Constants.MediaPickerConstants.RESULT_DATA, new ArrayList<>(checkList));
+                    intent.putExtra(Constants.RESULT_SINGLE, false);
+                    intent.putStringArrayListExtra(Constants.RESULT_DATA, MediaUtils.beanToPathList(checkList));
                 }
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -422,14 +469,14 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
                 albumFragment.setCheckList(checkList);
                 onSelect(checkList.size());
             }
-        } else if (requestCode == CROP_REQUEST) {
+        } else if (requestCode == Constants.CROP_REQUEST) {
             //裁剪完毕回调
             Intent intent = new Intent();
-            intent.putExtra(Constants.MediaPickerConstants.RESULT_SINGLE, true);
-            intent.putExtra(Constants.MediaPickerConstants.RESULT_DATA, tempCropFile.getPath());
+            intent.putExtra(Constants.RESULT_SINGLE, true);
+            intent.putExtra(Constants.RESULT_DATA, tempCropFile.getPath());
             setResult(Activity.RESULT_OK, intent);
             finish();
-        } else if (requestCode == Constants.DEFAULT_REQUEST) {
+        } else if (requestCode == Constants.CAMERA_REQUEST) {
             //CameraResultActivity处理结果
             setResult(Activity.RESULT_OK, data);
             finish();
@@ -439,7 +486,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
     /**
      * 调用Android系统裁剪
      */
-    private void startCrop(File source) {
+    private void startCrop(File source, int requestCode) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(Uri.fromFile(source), "image/*");
         intent.putExtra("crop", "true");
@@ -457,7 +504,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
                 Uri.fromFile(tempCropFile));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true);
-        startActivityForResult(intent, Constants.CROP_REQUEST);
+        startActivityForResult(intent, requestCode);
     }
 
 

@@ -8,13 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
-import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.ui.adapter.MediaPreAdapter;
 import com.tk.mediapicker.widget.HackyViewPager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TK on 2016/10/14.
@@ -27,7 +28,7 @@ public class MediaPreActivity extends BaseActivity implements View.OnClickListen
     private TextView title;
     private ImageView delete;
     private MediaPreAdapter mediaPreAdapter;
-    private ArrayList<String> fileList;
+    private List<String> fileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class MediaPreActivity extends BaseActivity implements View.OnClickListen
         delete = (ImageView) findViewById(R.id.delete);
         back.setOnClickListener(this);
         delete.setOnClickListener(this);
-        fileList = getIntent().getExtras().getStringArrayList(Constants.PreMediaConstants.REQUEST_DATA);
-        int index = getIntent().getExtras().getInt(Constants.PreMediaConstants.INDEX, 0);
+        Bundle bundle = getIntent().getExtras();
+        fileList = bundle.getStringArrayList(Constants.PreMediaConstants.REQUEST_DATA);
+        int index = bundle.getInt(Constants.PreMediaConstants.INDEX, 0);
         if (fileList == null || fileList.size() == 0) {
             throw new IllegalArgumentException("fileList is null!");
         }
@@ -78,7 +80,8 @@ public class MediaPreActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void finish() {
         Intent intent = new Intent();
-        intent.putStringArrayListExtra(Constants.PreMediaConstants.REQUEST_DATA, fileList);
+        intent.putExtra(Constants.RESULT_SINGLE, false);
+        intent.putStringArrayListExtra(Constants.RESULT_DATA, new ArrayList<>(fileList));
         setResult(Activity.RESULT_OK, intent);
         super.finish();
     }

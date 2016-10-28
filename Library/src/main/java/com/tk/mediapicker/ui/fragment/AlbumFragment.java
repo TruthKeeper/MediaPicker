@@ -90,8 +90,8 @@ public class AlbumFragment extends BaseFragment {
         recyclerview.addItemDecoration(new ItemDecoration(mContext, 3));
         albumAdapter = new AlbumAdapter(mContext,
                 mediaList,
-                bundle.getInt(Constants.MediaPickerConstants.CHECK_LIMIT),
-                bundle.getBoolean(Constants.MediaPickerConstants.IS_SINGLE));
+                bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT),
+                bundle.getBoolean(Constants.AlbumRequestConstants.AS_SINGLE));
         albumAdapter.setOnAlbumSelectListener(onAlbumSelectListener);
         recyclerview.setAdapter(albumAdapter);
         onScrollListener = new OnScrollListener();
@@ -111,7 +111,7 @@ public class AlbumFragment extends BaseFragment {
         if (hasInit && hasPermission) {
             dialog = new ProgressDialog(mContext);
             subscription = Observable.fromCallable(() -> AlbumUtils.initData(mContext,
-                    bundle.getBoolean(Constants.MediaPickerConstants.SHOW_VIDEO, false)))
+                    bundle.getBoolean(Constants.AlbumRequestConstants.SHOW_VIDEO, false)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Pair<List<MediaBean>, List<MediaFolderBean>>>() {
@@ -128,7 +128,7 @@ public class AlbumFragment extends BaseFragment {
                             mediaList.clear();
                             mediaList.addAll(listListPair.first);
                             //防止界面闪烁，后续设置
-                            albumAdapter.setShowCamera(bundle.getBoolean(Constants.MediaPickerConstants.SHOW_CAMERA, false));
+                            albumAdapter.setShowCamera(bundle.getBoolean(Constants.AlbumRequestConstants.SHOW_CAMERA, false));
                             albumAdapter.notifyItemRangeInserted(0, mediaList.size());
                             if (onFolderListener != null) {
                                 onFolderListener.onFolderComplete(listListPair.second);
@@ -172,7 +172,7 @@ public class AlbumFragment extends BaseFragment {
     public void setAlbumList(List<MediaBean> albumList, boolean firstIndex) {
         this.mediaList.clear();
         this.mediaList.addAll(albumList);
-        albumAdapter.setShowCamera(firstIndex && bundle.getBoolean(Constants.MediaPickerConstants.SHOW_CAMERA, false));
+        albumAdapter.setShowCamera(firstIndex && bundle.getBoolean(Constants.AlbumRequestConstants.SHOW_CAMERA, false));
         albumAdapter.notifyDataSetChanged();
         recyclerview.scrollToPosition(0);
     }

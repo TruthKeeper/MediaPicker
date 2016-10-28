@@ -4,8 +4,12 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.tk.mediapicker.bean.MediaBean;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,6 +42,7 @@ public final class MediaUtils {
         }
         return File.createTempFile(IMG_PREFIX, IMG_SUFFIX, dir);
     }
+
     /**
      * 创建临时文件
      *
@@ -58,4 +63,45 @@ public final class MediaUtils {
         return File.createTempFile(VIDEO_PREFIX, VIDEO_SUFFIX, dir);
     }
 
+    /**
+     * 转换成String List
+     *
+     * @param sourceList
+     * @return
+     */
+    public static ArrayList<String> beanToPathList(List<MediaBean> sourceList) {
+        ArrayList<String> pathList = new ArrayList<String>();
+        for (MediaBean bean : sourceList) {
+            pathList.add(bean.getPath());
+        }
+        return pathList;
+    }
+
+    /**
+     * 转换成String List
+     *
+     * @param sourceList
+     * @return
+     */
+    public static ArrayList<String> fileToPathList(List<File> sourceList) {
+        ArrayList<String> pathList = new ArrayList<String>();
+        for (File file : sourceList) {
+            pathList.add(file.getAbsolutePath());
+        }
+        return pathList;
+    }
+
+    /**
+     * 转换成String List
+     *
+     * @param sourceList
+     * @return
+     */
+    public static ArrayList<File> pathToFileList(List<String> sourceList) {
+        ArrayList<File> fileList = new ArrayList<File>();
+        for (String path : sourceList) {
+            fileList.add(new File(path));
+        }
+        return fileList;
+    }
 }

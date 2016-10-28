@@ -16,8 +16,8 @@ import com.tk.mediapicker.R;
 import com.tk.mediapicker.utils.FileUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -30,7 +30,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MediaPreAdapter extends PagerAdapter {
     private LinkedList<View> mCacheList = new LinkedList<View>();
-    private ArrayList<String> fileList;
+    private List<String> fileList;
     private Context mContext;
     private OnMediaClickListener onMediaClickListener;
     private LayoutInflater mInflater;
@@ -38,7 +38,7 @@ public class MediaPreAdapter extends PagerAdapter {
     private int h;
 
 
-    public MediaPreAdapter(Context mContext, ArrayList<String> fileList) {
+    public MediaPreAdapter(Context mContext, List<String> fileList) {
         this.mContext = mContext;
         this.fileList = fileList;
         mInflater = LayoutInflater.from(mContext);
