@@ -90,8 +90,8 @@ public class AlbumFragment extends BaseFragment {
         recyclerview.addItemDecoration(new ItemDecoration(mContext, 3));
         albumAdapter = new AlbumAdapter(mContext,
                 mediaList,
-                bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT),
-                bundle.getBoolean(Constants.AlbumRequestConstants.AS_SINGLE));
+                bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1),
+                bundle.getBoolean(Constants.AlbumRequestConstants.AS_SINGLE,true));
         albumAdapter.setOnAlbumSelectListener(onAlbumSelectListener);
         recyclerview.setAdapter(albumAdapter);
         onScrollListener = new OnScrollListener();

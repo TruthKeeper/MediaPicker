@@ -58,7 +58,7 @@ public final class Constants {
 
 
     /**
-     * to 预览照片传递参数
+     * RreviewRequest
      */
     public static final class PreMediaConstants {
         /**
@@ -69,5 +69,12 @@ public final class Constants {
         public static final String INDEX = "index";
     }
 
+    /**
+     * FileRequest
+     */
+    public static final class FileConstants {
+        public static final String AS_SINGLE = AlbumRequestConstants.AS_SINGLE;
+        public static final String CHECK_LIMIT = AlbumRequestConstants.CHECK_LIMIT;
+    }
 
 }

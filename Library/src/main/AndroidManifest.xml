@@ -35,6 +35,11 @@
             android:configChanges="locale|keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.FileListActivity"
+            android:configChanges="locale|keyboardHidden|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.tk.mediapicker.MyGlideModule"

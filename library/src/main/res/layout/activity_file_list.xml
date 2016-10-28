@@ -4,10 +4,5 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.tk.mediapicker.videopicker.widget.RECView
-        android:id="@+id/rec_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 
 </RelativeLayout>

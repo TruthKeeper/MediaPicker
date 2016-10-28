@@ -18,9 +18,9 @@ import static com.tk.mediapicker.Constants.PreMediaConstants.REQUEST_DATA;
  * 预览请求
  */
 
-public final class PreviewerRequest extends Request {
+public final class PreviewRequest extends Request {
 
-    private PreviewerRequest(Activity activity, Bundle bundle, int requestCode, List<File> sourceList) {
+    private PreviewRequest(Activity activity, Bundle bundle, int requestCode, List<File> sourceList) {
         this.mActivity = activity;
         this.mBundle = bundle;
         this.mRequestCode = requestCode;
@@ -63,8 +63,8 @@ public final class PreviewerRequest extends Request {
         }
 
 
-        public PreviewerRequest build() {
-            return new PreviewerRequest(activity, bundle, requestCode, sourceList);
+        public PreviewRequest build() {
+            return new PreviewRequest(activity, bundle, requestCode, sourceList);
         }
     }
 }

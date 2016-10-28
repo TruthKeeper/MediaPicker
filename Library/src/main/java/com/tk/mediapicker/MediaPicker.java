@@ -5,9 +5,9 @@ import android.content.Intent;
 
 import com.tk.mediapicker.callback.Callback;
 import com.tk.mediapicker.request.Request;
+import com.tk.mediapicker.utils.MediaUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,11 +44,7 @@ public final class MediaPicker {
             callback.onComplete(new File(data.getStringExtra(Constants.RESULT_DATA)));
         } else {
             List<String> pathList = data.getStringArrayListExtra(Constants.RESULT_DATA);
-            List<File> sourceList = new ArrayList<File>();
-            for (int i = 0; i < pathList.size(); i++) {
-                sourceList.add(new File(pathList.get(i)));
-            }
-            callback.onComplete(sourceList);
+            callback.onComplete(MediaUtils.pathToFileList(pathList));
         }
     }
 

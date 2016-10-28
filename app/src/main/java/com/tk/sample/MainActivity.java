@@ -18,7 +18,8 @@ import com.tk.mediapicker.callback.Callback;
 import com.tk.mediapicker.callback.CompressCallback;
 import com.tk.mediapicker.request.AlbumRequest;
 import com.tk.mediapicker.request.CameraRequest;
-import com.tk.mediapicker.request.PreviewerRequest;
+import com.tk.mediapicker.request.FileRequest;
+import com.tk.mediapicker.request.PreviewRequest;
 import com.tk.mediapicker.request.RECRequest;
 import com.tk.mediapicker.utils.FileUtils;
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         preAdapter.setOnPreClickListener(new NinePreAdapter.OnPreClickListener() {
             @Override
             public void onPre(int position) {
-                MediaPicker.startRequest(new PreviewerRequest.Builder(MainActivity.this, 5, fileList)
+                MediaPicker.startRequest(new PreviewRequest.Builder(MainActivity.this, 5, fileList)
                         .setIndex(position)
                         .build());
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.iv_show, R.id.camera_and_crop, R.id.album, R.id.select_im, R.id.start_rec})
+    @OnClick({R.id.iv_show, R.id.camera_and_crop, R.id.album, R.id.select_im, R.id.start_rec, R.id.start_file})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show:
@@ -127,6 +128,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.start_rec:
                 //开始录像
                 MediaPicker.startRequest(new RECRequest.Builder(MainActivity.this, 7)
+                        .build());
+                break;
+            case R.id.start_file:
+                //寻找文件
+                MediaPicker.startRequest(new FileRequest.Builder(MainActivity.this, 8)
+                        .asSystem(checkbox2.isChecked())
+                        .setCheckLimit(9)
+                        .asSingle(false)
                         .build());
                 break;
 
@@ -172,11 +181,25 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 6:
                 //IM
+                break;
             case 7:
                 MediaPicker.onMediaResult(resultCode, data, new Callback() {
                     @Override
                     public void onComplete(File source) {
-                        Toast.makeText(MainActivity.this, FileUtils.getFileSize(source) + "\n" + source.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        videoSize.setText(FileUtils.getFileSize(source));
+                        videoPath.setText(source.getAbsolutePath());
+                    }
+
+                    @Override
+                    public void onComplete(List<File> sourceList) {
+                    }
+                });
+                break;
+            case 8:
+                MediaPicker.onMediaResult(resultCode, data, new Callback() {
+                    @Override
+                    public void onComplete(File source) {
+                        Toast.makeText(MainActivity.this, FileUtils.getFileSize(source), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

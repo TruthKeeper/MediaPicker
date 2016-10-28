@@ -203,7 +203,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             preIntent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getSelectList()));
             preIntent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
             preIntent.putExtra(Constants.PreAlbumConstants.INDEX, 0);
-            preIntent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT));
+            preIntent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1));
             startActivityForResult(preIntent, Constants.PreAlbumConstants.PRE_REQUEST);
 
         } else if (view.getId() == R.id.shadow) {
@@ -382,7 +382,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getMediaList()));
             intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
             intent.putExtra(Constants.PreAlbumConstants.INDEX, position);
-            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT));
+            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1));
             startActivityForResult(intent, Constants.PreAlbumConstants.PRE_REQUEST);
         }
     }
@@ -395,7 +395,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             if (bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1) == 1 && select == 1) {
                 confirmBtn.setText("完成");
             } else {
-                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT) + ")");
+                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1) + ")");
             }
             previewText.setEnabled(true);
             confirmBtn.setEnabled(true);
