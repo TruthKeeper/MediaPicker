@@ -13,13 +13,13 @@ import com.tk.mediapicker.utils.DensityUtil;
 /**
  * Created by TK on 2016/9/26.
  */
-public class ItemDecoration extends RecyclerView.ItemDecoration {
+public class AlbumItemDecoration extends RecyclerView.ItemDecoration {
     public static final int DIVIDER = 2;
     private static final ColorDrawable DRAWABLE = new ColorDrawable(0xFF191919);
     private int divider;
     private int span;
 
-    public ItemDecoration(Context mContext, int span) {
+    public AlbumItemDecoration(Context mContext, int span) {
         this.span = span;
         divider = DensityUtil.dp2px(mContext, DIVIDER);
     }

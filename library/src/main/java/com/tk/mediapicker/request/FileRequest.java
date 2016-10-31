@@ -7,8 +7,6 @@ import android.os.Bundle;
 import com.tk.mediapicker.ui.activity.FileListActivity;
 
 import static com.tk.mediapicker.Constants.AS_SYSTEM;
-import static com.tk.mediapicker.Constants.FileConstants.AS_SINGLE;
-import static com.tk.mediapicker.Constants.FileConstants.CHECK_LIMIT;
 
 /**
  * Created by TK on 2016/10/28.
@@ -44,29 +42,6 @@ public final class FileRequest extends Request {
             bundle = new Bundle();
             this.activity = activity;
             this.requestCode = requestCode;
-        }
-
-        /**
-         * 文件夹是否单选，默认单选
-         *
-         * @return
-         */
-        public Builder asSingle(boolean asSingle) {
-            bundle.putBoolean(AS_SINGLE, asSingle);
-            return this;
-        }
-
-        /**
-         * 选择数量限制
-         *
-         * @return
-         */
-        public Builder setCheckLimit(int checkLimit) {
-            if (checkLimit <= 1) {
-                return asSingle(true);
-            }
-            bundle.putInt(CHECK_LIMIT, checkLimit);
-            return this;
         }
 
         /**

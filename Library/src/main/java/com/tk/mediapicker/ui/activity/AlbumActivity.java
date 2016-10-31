@@ -5,7 +5,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -34,6 +33,7 @@ import com.tk.mediapicker.request.CameraRequest;
 import com.tk.mediapicker.ui.adapter.AlbumAdapter;
 import com.tk.mediapicker.ui.adapter.FolderAdapter;
 import com.tk.mediapicker.ui.fragment.AlbumFragment;
+import com.tk.mediapicker.utils.DocumentUtils;
 import com.tk.mediapicker.utils.FolderUtils;
 import com.tk.mediapicker.utils.MediaUtils;
 import com.tk.mediapicker.utils.PermissionHelper;
@@ -382,7 +382,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.ALBUM_LIST, new ArrayList<>(albumFragment.getMediaList()));
             intent.putParcelableArrayListExtra(Constants.PreAlbumConstants.CHECK_LIST, new ArrayList<>(albumFragment.getSelectList()));
             intent.putExtra(Constants.PreAlbumConstants.INDEX, position);
-            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1));
+            intent.putExtra(Constants.PreAlbumConstants.LIMIT, bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1));
             startActivityForResult(intent, Constants.PreAlbumConstants.PRE_REQUEST);
         }
     }
@@ -395,7 +395,7 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
             if (bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1) == 1 && select == 1) {
                 confirmBtn.setText("完成");
             } else {
-                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1) + ")");
+                confirmBtn.setText("完成(" + select + "/" + bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT, 1) + ")");
             }
             previewText.setEnabled(true);
             confirmBtn.setEnabled(true);
@@ -416,20 +416,14 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
                 return;
             }
             //系统相册处理结果
-            Uri imageUri = data.getData();
-            String[] filePathColumns = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(imageUri, filePathColumns, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumns[0]);
-            String imagePath = cursor.getString(columnIndex);
-            cursor.close();
+            String path = DocumentUtils.getPath(this, data.getData());
             if (bundle.getBoolean(Constants.AlbumRequestConstants.NEED_CROP, false)) {
-                startCrop(new File(imagePath), Constants.DEFAULT_PLUS_REQUEST);
+                startCrop(new File(path), Constants.DEFAULT_PLUS_REQUEST);
                 return;
             }
             Intent intent = new Intent();
             intent.putExtra(Constants.RESULT_SINGLE, true);
-            intent.putExtra(Constants.RESULT_DATA, imagePath);
+            intent.putExtra(Constants.RESULT_DATA, path);
             setResult(Activity.RESULT_OK, intent);
             finish();
             return;

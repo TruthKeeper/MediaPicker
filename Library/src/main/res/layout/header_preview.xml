@@ -30,7 +30,7 @@
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         android:textColor="@android:color/white"
-        android:textSize="17sp" />
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/delete"

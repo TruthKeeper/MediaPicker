@@ -179,7 +179,7 @@ public class AlbumPreActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             refreshOnResult(false);
             return true;
         }
@@ -234,7 +234,7 @@ public class AlbumPreActivity extends BaseActivity implements ViewPager.OnPageCh
     @Override
     public void onClickVideo(int position) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(albumList.get(position).getPath())), "video/mp4");
+        intent.setDataAndType(Uri.fromFile(new File(albumList.get(position).getPath())), "video/*");
         startActivity(intent);
     }
 

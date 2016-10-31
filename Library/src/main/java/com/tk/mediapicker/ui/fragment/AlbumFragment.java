@@ -22,7 +22,7 @@ import com.tk.mediapicker.ui.adapter.AlbumAdapter;
 import com.tk.mediapicker.ui.adapter.AlbumAdapter.OnAlbumSelectListener;
 import com.tk.mediapicker.utils.AlbumUtils;
 import com.tk.mediapicker.utils.DateUtils;
-import com.tk.mediapicker.widget.ItemDecoration;
+import com.tk.mediapicker.widget.AlbumItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class AlbumFragment extends BaseFragment {
         gridLayoutManager = new GridLayoutManager(mContext, 3);
         recyclerview.setLayoutManager(gridLayoutManager);
         recyclerview.setHasFixedSize(true);
-        recyclerview.addItemDecoration(new ItemDecoration(mContext, 3));
+        recyclerview.addItemDecoration(new AlbumItemDecoration(mContext, 3));
         albumAdapter = new AlbumAdapter(mContext,
                 mediaList,
                 bundle.getInt(Constants.AlbumRequestConstants.CHECK_LIMIT,1),

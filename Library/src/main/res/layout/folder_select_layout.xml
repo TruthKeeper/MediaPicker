@@ -56,9 +56,10 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <com.tk.mediapicker.widget.FolderCheckView
+    <com.tk.mediapicker.widget.FolderCheckView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/indicator"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginRight="12dp" />
+        android:layout_marginRight="12dp"
+        app:checked="true" />
 </LinearLayout>

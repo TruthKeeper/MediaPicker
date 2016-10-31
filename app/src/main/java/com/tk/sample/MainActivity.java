@@ -134,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 //寻找文件
                 MediaPicker.startRequest(new FileRequest.Builder(MainActivity.this, 8)
                         .asSystem(checkbox2.isChecked())
-                        .setCheckLimit(9)
-                        .asSingle(false)
                         .build());
                 break;
 
