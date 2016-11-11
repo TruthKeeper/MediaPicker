@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("加载中");
-
+        MediaPicker.setThemeColor(0xffff6262);
         preAdapter = new NinePreAdapter(this, fileList);
         recyclerview.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerview.setHasFixedSize(true);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.camera_and_crop:
                 MediaPicker.startRequest(new CameraRequest.Builder(MainActivity.this, 2)
-                        .needCrop(true)
+                        .needCrop(false)
                         .build());
                 break;
             case R.id.album:
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         .needCrop(true)
                         .asSystem(checkbox2.isChecked())
                         .asSingle(true)
-                        .showCameraIndex(true)
+                        .showCameraIndex(false)
                         .showVideoContent(false)
                         .build());
                 break;

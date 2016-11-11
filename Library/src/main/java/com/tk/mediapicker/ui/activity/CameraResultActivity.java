@@ -10,27 +10,30 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
-import com.tk.mediapicker.utils.PermissionHelper;
-import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.utils.MediaUtils;
+import com.tk.mediapicker.utils.PermissionHelper;
 import com.tk.mediapicker.widget.ConfirmButton;
 
 import java.io.File;
 import java.io.IOException;
 
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import top.zibin.luban.Luban;
 import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 
 /**
@@ -46,7 +49,7 @@ public class CameraResultActivity extends BaseActivity {
     private TextView title;
     private ConfirmButton confirmBtn;
     private PhotoView photoview;
-
+    private Subscription subscription;
     //记录相机是否开启
     private boolean hasStart;
     //记录拍照回调
@@ -235,20 +238,28 @@ public class CameraResultActivity extends BaseActivity {
 
         title.setText("1/1");
         confirmBtn.setEnabled(true);
-
-        final PhotoViewAttacher attacher = new PhotoViewAttacher(photoview);
-        Glide.with(this)
+        subscription = Luban.get(this)
                 .load(tempCameraFile)
-                .asBitmap()
-                .override(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)
-                .fitCenter()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        photoview.setImageBitmap(resource);
-                        attacher.update();
-                    }
+                .putGear(Luban.THIRD_GEAR)
+                .asObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> {
+                    throwable.printStackTrace();
+                })
+                .subscribe(file -> {
+                    Glide.with(CameraResultActivity.this)
+                            .load(file)
+                            .override(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)
+                            .fitCenter()
+                            .into(new SimpleTarget<GlideDrawable>() {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                    photoview.setImageDrawable(resource);
+                                }
+                            });
                 });
+
         confirmBtn.setOnClickListener(v -> {
             //点击完成将拍照结果回调给PhotoPicker
             Intent data = new Intent();
@@ -257,13 +268,21 @@ public class CameraResultActivity extends BaseActivity {
             setResult(Activity.RESULT_OK, data);
             finish();
         });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearTemp();
-                finish();
-            }
+        back.setOnClickListener(v -> {
+            clearTemp();
+            finish();
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (subscription != null && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+        if (photoview != null) {
+            photoview.setImageDrawable(null);
+        }
     }
 
     /**

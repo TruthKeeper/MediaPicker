@@ -2,10 +2,12 @@ package com.tk.mediapicker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.ColorInt;
 
 import com.tk.mediapicker.callback.Callback;
 import com.tk.mediapicker.request.Request;
 import com.tk.mediapicker.utils.MediaUtils;
+import com.tk.mediapicker.utils.ThemeUtils;
 
 import java.io.File;
 import java.util.List;
@@ -18,6 +20,15 @@ import java.util.List;
 
 public final class MediaPicker {
     public static final String TAG = "MediaPicker";
+
+    /**
+     * 设置主题颜色
+     *
+     * @param color
+     */
+    public static void setThemeColor(@ColorInt int color) {
+        ThemeUtils.themeColor = color;
+    }
 
     /**
      * 发起请求

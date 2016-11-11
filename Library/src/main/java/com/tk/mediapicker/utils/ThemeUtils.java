@@ -8,6 +8,7 @@ import android.graphics.Color;
 
 public class ThemeUtils {
     public static int themeColor = 0xFF45C01A;
+
     /**
      * 生成新的颜色
      *
@@ -20,9 +21,12 @@ public class ThemeUtils {
         if (colorStr.length() == 8) {
             colorStr = colorStr.substring(2, 8);
         }
-        colors[0] = Color.parseColor("#ff" + colorStr);
-        colors[1] = Color.parseColor("#80" + colorStr);
-        colors[2] = Color.parseColor("#40" + colorStr);
+        colors[0] =   Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
+        colors[1] =   Color.argb((int) (255*0.8), Color.red(color), Color.green(color), Color.blue(color));
+        colors[2] =   Color.argb((int) (255*0.4), Color.red(color), Color.green(color), Color.blue(color));
+//        colors[0] = Color.parseColor("#ff" + colorStr);
+//        colors[1] = Color.parseColor("#80" + colorStr);
+//        colors[2] = Color.parseColor("#40" + colorStr);
         return colors;
     }
 }

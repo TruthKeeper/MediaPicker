@@ -74,6 +74,7 @@ public final class AlbumUtils {
             if (newMediaList.size() != 0) {
                 MediaFolderBean allBean = new MediaFolderBean(newMediaList.get(0).getPath(), context.getString(R.string.all_media));
                 allBean.setIndexVideo(newMediaList.get(0).isVideo());
+                allBean.setMediaList(newMediaList);
                 newMediaFolderList.add(0, allBean);
             }
         } else {
@@ -88,6 +89,7 @@ public final class AlbumUtils {
             //有数据的话补上所有
             if (newMediaList.size() != 0) {
                 MediaFolderBean allBean = new MediaFolderBean(newMediaList.get(0).getPath(), context.getString(R.string.all_photo));
+                allBean.setMediaList(photoList);
                 newMediaFolderList.add(0, allBean);
             }
         }
