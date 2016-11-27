@@ -217,6 +217,9 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
      * 切入切出动画
      */
     private void startFolderAnim() {
+        if (animLock) {
+            return;
+        }
         if (folderRecyclerview.getVisibility() == View.GONE) {
             showAnim.start();
         } else {
@@ -226,8 +229,9 @@ public class AlbumActivity extends BaseActivity implements OnFolderListener,
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (folderRecyclerview != null && folderRecyclerview.getVisibility() == View.VISIBLE) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (folderRecyclerview != null
+                    && folderRecyclerview.getVisibility() == View.VISIBLE) {
                 startFolderAnim();
                 return true;
             }

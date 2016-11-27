@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tk.mediapicker.Constants;
 import com.tk.mediapicker.R;
 import com.tk.mediapicker.base.BaseActivity;
+import com.tk.mediapicker.utils.FileUtils;
 import com.tk.mediapicker.utils.MediaUtils;
 import com.tk.mediapicker.utils.PermissionHelper;
 
@@ -28,7 +31,10 @@ import static com.tk.mediapicker.Constants.DEFAULT_REQUEST;
 
 public class RECResultActivity extends BaseActivity {
     private File tempFile;
+    //记录录像是否开启
     private boolean hasStart;
+    //记录录像回调
+    private boolean recResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class RECResultActivity extends BaseActivity {
             tempFile = new File(tempFileP);
         }
         hasStart = savedInstanceState.getBoolean("hasStart", false);
+        recResult = savedInstanceState.getBoolean("recResult", false);
     }
 
     @Override
@@ -62,6 +69,7 @@ public class RECResultActivity extends BaseActivity {
             outState.putString("tempFile", tempFile.getAbsolutePath());
         }
         outState.putBoolean("hasStart", hasStart);
+        outState.putBoolean("recResult", recResult);
 
     }
 
@@ -83,10 +91,40 @@ public class RECResultActivity extends BaseActivity {
     }
 
     private void init() {
-        if (hasStart) {
+        if (!hasStart) {
+            hasStart = true;
+            startREC();
             return;
         }
-        Log.e("startREC", "startREC");
+        if (recResult) {
+            setContentView(R.layout.activity_rec_result);
+            initView();
+        }
+
+    }
+
+    private void initView() {
+
+        TextView result = (TextView) findViewById(R.id.result);
+        Button btnConfirm = (Button) findViewById(R.id.btn_confirm);
+        result.setText(FileUtils.getFileSize(tempFile));
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(Constants.RESULT_SINGLE, true);
+                intent.putExtra(Constants.RESULT_DATA, tempFile.getAbsolutePath());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
+
+    }
+
+    /**
+     * 开始录像
+     */
+    private void startREC() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             // 创建临时文件，并设置系统相机拍照后的输出路径
@@ -109,7 +147,6 @@ public class RECResultActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "您的手机不支持录像", Toast.LENGTH_SHORT).show();
             finish();
         }
-
     }
 
     @Override
@@ -117,14 +154,13 @@ public class RECResultActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.DEFAULT_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Intent intent = new Intent();
-                intent.putExtra(Constants.RESULT_SINGLE, true);
-                intent.putExtra(Constants.RESULT_DATA, tempFile.getAbsolutePath());
-                setResult(Activity.RESULT_OK, intent);
+                recResult = true;
+                setContentView(R.layout.activity_rec_result);
+                initView();
             } else {
                 clearTemp();
+                finish();
             }
-            finish();
         }
     }
 
