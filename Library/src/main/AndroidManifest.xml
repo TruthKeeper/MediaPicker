@@ -22,7 +22,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.CameraResultActivity"
-            android:configChanges="locale|keyboardHidden|orientation"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -32,7 +32,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RECResultActivity"
-            android:configChanges="locale|keyboardHidden|orientation"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
